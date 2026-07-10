@@ -20,7 +20,12 @@ def get_ai_provider(provider_name: ProviderName, settings: Settings) -> AIProvid
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail="OpenAI provider is not configured.",
             )
-        return OpenAIProvider(settings.openai_api_key, settings.openai_model)
+        return OpenAIProvider(
+            settings.openai_api_key,
+            settings.openai_model,
+            temperature=settings.openai_temperature,
+            max_tokens=settings.openai_max_tokens,
+        )
 
     if provider_name == "anthropic":
         if not settings.anthropic_api_key:
@@ -28,7 +33,12 @@ def get_ai_provider(provider_name: ProviderName, settings: Settings) -> AIProvid
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail="Anthropic provider is not configured.",
             )
-        return ClaudeProvider(settings.anthropic_api_key, settings.anthropic_model)
+        return ClaudeProvider(
+            settings.anthropic_api_key,
+            settings.anthropic_model,
+            temperature=settings.anthropic_temperature,
+            max_tokens=settings.anthropic_max_tokens,
+        )
 
     if provider_name == "xai":
         if not settings.xai_api_key:
@@ -36,7 +46,12 @@ def get_ai_provider(provider_name: ProviderName, settings: Settings) -> AIProvid
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail="xAI provider is not configured.",
             )
-        return XAIProvider(settings.xai_api_key, settings.xai_model)
+        return XAIProvider(
+            settings.xai_api_key,
+            settings.xai_model,
+            temperature=settings.xai_temperature,
+            max_tokens=settings.xai_max_tokens,
+        )
 
     raise HTTPException(
         status_code=status.HTTP_400_BAD_REQUEST,

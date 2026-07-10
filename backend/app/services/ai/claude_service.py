@@ -19,16 +19,20 @@ class ClaudeProvider(AIProvider):
         self,
         api_key: str,
         model: str,
+        temperature: float = 0.2,
+        max_tokens: int = 2000,
         client: AsyncAnthropic | None = None,
     ) -> None:
         self.model = model
+        self.temperature = temperature
+        self.max_tokens = max_tokens
         self.client = client or AsyncAnthropic(api_key=api_key)
 
     async def analyze(self, prompt: str) -> dict[str, Any]:
         response = await self.client.messages.create(
             model=self.model,
-            max_tokens=2000,
-            temperature=0.2,
+            max_tokens=self.max_tokens,
+            temperature=self.temperature,
             messages=[{"role": "user", "content": prompt}],
         )
         content = "".join(

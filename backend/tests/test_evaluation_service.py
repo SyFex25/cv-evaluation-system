@@ -33,15 +33,17 @@ class FakeProvider:
     name = "openai"
 
     async def analyze(self, prompt: str) -> dict:
+        assert "Frontend Developer" in prompt
+        assert "Candidate CV text" in prompt
         return {
             "overall_score": 80,
-            "summary": "Good fit.",
+            "summary": "Kandidat cukup sesuai untuk posisi ini.",
             "strengths": ["Python"],
-            "weaknesses": ["No management experience"],
+            "weaknesses": ["Belum ada pengalaman manajemen"],
             "skills": [
                 {"name": "Python", "score": 85, "evidence": "Project experience"}
             ],
-            "recommendation": "Proceed",
+            "recommendation": "Layak diproses ke tahap berikutnya.",
         }
 
 
@@ -62,6 +64,7 @@ async def test_evaluate_cv_uses_tempfile_and_returns_valid_report(monkeypatch):
 
     response = await evaluation.evaluate_cv(
         file=FakeUploadFile(b"pdf bytes"),
+        job_description="Frontend Developer",
         settings=Settings(openai_api_key="test-key"),
     )
 

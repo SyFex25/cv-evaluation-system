@@ -8,10 +8,23 @@ import { AxiosError } from 'axios'
 import { apiClient } from '@/services/apiClient'
 import type { AnalyzeResponse, ProviderName } from '@/types/api'
 
-export async function analyzeCv(file: File, provider: ProviderName): Promise<AnalyzeResponse> {
+const apiErrorTranslations: Record<string, string> = {
+  'Only PDF and DOCX files are supported.': 'Hanya berkas PDF dan DOCX yang didukung.',
+  'Uploaded file is too large.': 'Ukuran berkas terlalu besar. Maksimal 10 MB.',
+  'Could not extract text from the uploaded CV.': 'Teks CV tidak dapat diekstrak. Gunakan PDF berbasis teks atau DOCX.',
+  'Unsupported file type.': 'Jenis berkas tidak didukung.',
+  'Please upload a text-based PDF or DOCX file.': 'Unggah PDF berbasis teks atau berkas DOCX.',
+  'Job description is required.': 'Deskripsi lowongan wajib diisi.',
+}
+
+export async function analyzeCv(file: File, jobDescription: string, provider?: ProviderName): Promise<AnalyzeResponse> {
   const formData = new FormData()
   formData.append('file', file)
-  formData.append('provider', provider)
+  formData.append('job_description', jobDescription)
+
+  if (provider) {
+    formData.append('provider', provider)
+  }
 
   try {
     // The httpOnly auth cookie is attached automatically by the shared client.
@@ -28,7 +41,7 @@ function getApiErrorMessage(error: unknown): string {
     const detail = error.response?.data?.detail
 
     if (typeof detail === 'string') {
-      return detail
+      return apiErrorTranslations[detail] ?? detail
     }
   }
 

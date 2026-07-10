@@ -42,29 +42,30 @@ def test_analyze_rejects_missing_bearer_token():
     response = client.post(
         "/api/analyze",
         files={"file": ("candidate.pdf", b"pdf bytes", "application/pdf")},
-        data={"provider": "openai"},
+        data={"provider": "openai", "job_description": "Frontend Developer"},
     )
 
     assert response.status_code == 401
 
 
 def test_analyze_accepts_authenticated_user(monkeypatch):
-    async def fake_evaluate_cv(file, settings, provider_name=None):
+    async def fake_evaluate_cv(file, job_description, settings, provider_name=None):
+        assert job_description == "Frontend Developer"
         return AnalyzeResponse(
             provider="openai",
             report=EvaluationReport(
                 overall_score=80,
-                summary="Good fit.",
+                summary="Kandidat cukup sesuai untuk posisi ini.",
                 strengths=["Python"],
-                weaknesses=["Limited leadership evidence"],
+                weaknesses=["Bukti pengalaman kepemimpinan masih terbatas"],
                 skills=[
                     {
                         "name": "Python",
                         "score": 85,
-                        "evidence": "Project experience",
+                        "evidence": "Pengalaman proyek",
                     }
                 ],
-                recommendation="Proceed",
+                recommendation="Layak diproses ke tahap berikutnya.",
             ),
         )
 
@@ -84,7 +85,7 @@ def test_analyze_accepts_authenticated_user(monkeypatch):
         "/api/analyze",
         headers={"Authorization": f"Bearer {token}"},
         files={"file": ("candidate.pdf", b"pdf bytes", "application/pdf")},
-        data={"provider": "openai"},
+        data={"provider": "openai", "job_description": "Frontend Developer"},
     )
 
     assert response.status_code == 200

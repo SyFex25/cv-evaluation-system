@@ -18,8 +18,14 @@ router = APIRouter(prefix="/analyze", tags=["analyze"])
 @router.post("", response_model=AnalyzeResponse)
 async def analyze_cv(
     file: UploadFile = File(...),
+    job_description: str = Form(...),
     provider: ProviderName | None = Form(default=None),
     settings: Settings = Depends(get_settings),
     current_user: UserResponse = Depends(get_current_user),
 ) -> AnalyzeResponse:
-    return await evaluate_cv(file=file, provider_name=provider, settings=settings)
+    return await evaluate_cv(
+        file=file,
+        job_description=job_description,
+        provider_name=provider,
+        settings=settings,
+    )

@@ -70,39 +70,63 @@ class FakeClaudeClient:
 @pytest.mark.asyncio
 async def test_openai_provider_uses_configured_model_and_parses_json():
     client = FakeOpenAIClient()
-    provider = OpenAIProvider(api_key="test-key", model="test-openai-model", client=client)
+    provider = OpenAIProvider(
+        api_key="test-key",
+        model="test-openai-model",
+        temperature=0.4,
+        max_tokens=1500,
+        client=client,
+    )
 
     result = await provider.analyze("prompt")
 
     assert result == {"overall_score": 75}
     assert client.chat.completions.kwargs["model"] == "test-openai-model"
     assert client.chat.completions.kwargs["response_format"] == {"type": "json_object"}
+    assert client.chat.completions.kwargs["temperature"] == 0.4
+    assert client.chat.completions.kwargs["max_tokens"] == 1500
 
 
 @pytest.mark.asyncio
 async def test_xai_provider_uses_configured_model_and_parses_json():
     client = FakeOpenAIClient()
-    provider = XAIProvider(api_key="test-key", model="test-xai-model", client=client)
+    provider = XAIProvider(
+        api_key="test-key",
+        model="test-xai-model",
+        temperature=0.5,
+        max_tokens=1600,
+        client=client,
+    )
 
     result = await provider.analyze("prompt")
 
     assert result == {"overall_score": 75}
     assert client.chat.completions.kwargs["model"] == "test-xai-model"
     assert client.chat.completions.kwargs["response_format"] == {"type": "json_object"}
+    assert client.chat.completions.kwargs["temperature"] == 0.5
+    assert client.chat.completions.kwargs["max_tokens"] == 1600
 
 
 @pytest.mark.asyncio
 async def test_claude_provider_uses_configured_model_and_parses_json():
     client = FakeClaudeClient()
-    provider = ClaudeProvider(api_key="test-key", model="test-claude-model", client=client)
+    provider = ClaudeProvider(
+        api_key="test-key",
+        model="test-claude-model",
+        temperature=0.6,
+        max_tokens=1700,
+        client=client,
+    )
 
     result = await provider.analyze("prompt")
 
     assert result == {"overall_score": 82}
     assert client.messages.kwargs["model"] == "test-claude-model"
+    assert client.messages.kwargs["temperature"] == 0.6
+    assert client.messages.kwargs["max_tokens"] == 1700
 
 
-def test_factory_passes_env_keys_and_models_to_providers():
+def test_factory_passes_env_keys_models_and_generation_settings_to_providers():
     settings = Settings(
         openai_api_key="openai-key",
         anthropic_api_key="anthropic-key",
@@ -110,8 +134,24 @@ def test_factory_passes_env_keys_and_models_to_providers():
         openai_model="openai-model",
         anthropic_model="anthropic-model",
         xai_model="xai-model",
+        openai_temperature=0.1,
+        anthropic_temperature=0.2,
+        xai_temperature=0.3,
+        openai_max_tokens=1100,
+        anthropic_max_tokens=1200,
+        xai_max_tokens=1300,
     )
 
-    assert get_ai_provider("openai", settings).model == "openai-model"
-    assert get_ai_provider("anthropic", settings).model == "anthropic-model"
-    assert get_ai_provider("xai", settings).model == "xai-model"
+    openai_provider = get_ai_provider("openai", settings)
+    anthropic_provider = get_ai_provider("anthropic", settings)
+    xai_provider = get_ai_provider("xai", settings)
+
+    assert openai_provider.model == "openai-model"
+    assert openai_provider.temperature == 0.1
+    assert openai_provider.max_tokens == 1100
+    assert anthropic_provider.model == "anthropic-model"
+    assert anthropic_provider.temperature == 0.2
+    assert anthropic_provider.max_tokens == 1200
+    assert xai_provider.model == "xai-model"
+    assert xai_provider.temperature == 0.3
+    assert xai_provider.max_tokens == 1300

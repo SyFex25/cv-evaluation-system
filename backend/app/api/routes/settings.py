@@ -6,9 +6,10 @@ Responsibility: Exposes safe runtime settings needed by the frontend
 
 from fastapi import APIRouter, Depends
 
-from app.core.config import Settings, get_settings
-from app.core.constants import MAX_UPLOAD_SIZE_BYTES, SUPPORTED_FILE_EXTENSIONS
+from app.core.config import ProviderName, Settings, get_settings
+from app.schemas.request import ProviderRuntimeSettingsUpdate
 from app.schemas.response import SettingsResponse
+from app.services.settings_service import build_settings_response, update_provider_runtime_settings
 
 
 router = APIRouter(prefix="/settings", tags=["settings"])
@@ -16,9 +17,13 @@ router = APIRouter(prefix="/settings", tags=["settings"])
 
 @router.get("", response_model=SettingsResponse)
 async def read_settings(settings: Settings = Depends(get_settings)) -> SettingsResponse:
-    return SettingsResponse(
-        default_provider=settings.default_ai_provider,
-        available_providers=["openai", "anthropic", "xai"],
-        max_upload_size_bytes=MAX_UPLOAD_SIZE_BYTES,
-        supported_file_extensions=sorted(SUPPORTED_FILE_EXTENSIONS),
-    )
+    return build_settings_response(settings)
+
+
+@router.put("/providers/{provider_name}", response_model=SettingsResponse)
+async def update_provider_settings(
+    provider_name: ProviderName,
+    payload: ProviderRuntimeSettingsUpdate,
+    settings: Settings = Depends(get_settings),
+) -> SettingsResponse:
+    return update_provider_runtime_settings(provider_name, payload, settings)

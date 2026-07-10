@@ -19,9 +19,13 @@ class XAIProvider(AIProvider):
         self,
         api_key: str,
         model: str,
+        temperature: float = 0.2,
+        max_tokens: int = 2000,
         client: AsyncOpenAI | None = None,
     ) -> None:
         self.model = model
+        self.temperature = temperature
+        self.max_tokens = max_tokens
         self.client = client or AsyncOpenAI(
             api_key=api_key,
             base_url="https://api.x.ai/v1",
@@ -32,7 +36,8 @@ class XAIProvider(AIProvider):
             model=self.model,
             messages=[{"role": "user", "content": prompt}],
             response_format={"type": "json_object"},
-            temperature=0.2,
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
         )
         content = response.choices[0].message.content or ""
         return parse_json_object(content)

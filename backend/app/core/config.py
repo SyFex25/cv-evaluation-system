@@ -8,7 +8,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
-from pydantic import field_validator
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -29,6 +29,12 @@ class Settings(BaseSettings):
     openai_model: str = "gpt-4o-mini"
     anthropic_model: str = "claude-3-5-haiku-latest"
     xai_model: str = "grok-2-latest"
+    openai_temperature: float = Field(default=0.2, ge=0, le=1)
+    anthropic_temperature: float = Field(default=0.2, ge=0, le=1)
+    xai_temperature: float = Field(default=0.2, ge=0, le=1)
+    openai_max_tokens: int = Field(default=2000, ge=512, le=4096)
+    anthropic_max_tokens: int = Field(default=2000, ge=512, le=4096)
+    xai_max_tokens: int = Field(default=2000, ge=512, le=4096)
 
     auth_database_path: Path = BACKEND_DIR / "database" / "auth.db"
     auth_token_secret: str = "development-only-change-this-secret"

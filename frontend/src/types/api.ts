@@ -37,3 +37,26 @@ export type AnalyzeResponse = {
   provider: string
   report: EvaluationReport
 }
+
+export type ProviderRuntimeSettings = {
+  provider: ProviderName
+  model: string
+  available_models: string[]
+  temperature: number
+  max_tokens: number
+}
+
+export type SettingsResponse = {
+  default_provider: ProviderName
+  available_providers: ProviderName[]
+  provider_settings: ProviderRuntimeSettings[]
+  max_upload_size_bytes: number
+  supported_file_extensions: string[]
+}
+
+export type ProviderRuntimeSettingsUpdate = {
+  model: string
+  temperature: number
+  max_tokens: number
+  set_as_default: boolean
+}

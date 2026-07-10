@@ -6,17 +6,21 @@
 
 import { useState } from 'react'
 import './App.css'
-import { AuthPanel } from '@/components/AuthPanel'
+import { AppHeader } from '@/components/AppHeader'
+import { SidePanel } from '@/components/SidePanel'
 import { useAuth } from '@/hooks/useAuth'
-import { Dashboard } from '@/pages/Dashboard'
+import { useTheme } from '@/hooks/useTheme'
+import { Evaluation } from '@/pages/Evaluation'
 import { Login } from '@/pages/Login'
 import { Settings } from '@/pages/Settings'
 import type { LoginCredentials } from '@/services/authService'
 import type { AppPage } from '@/types/navigation'
 
 function App() {
-  const [activePage, setActivePage] = useState<AppPage>('dashboard')
+  const [activePage, setActivePage] = useState<AppPage>('evaluation')
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
   const auth = useAuth()
+  const { theme, toggleTheme } = useTheme()
 
   async function handleAuthSubmit(credentials: LoginCredentials) {
     await auth.login(credentials)
@@ -24,7 +28,8 @@ function App() {
 
   async function handleLogout() {
     await auth.logout()
-    setActivePage('dashboard')
+    setActivePage('evaluation')
+    setMobileSidebarOpen(false)
   }
 
   if (!auth.isAuthenticated) {
@@ -46,9 +51,25 @@ function App() {
 
   return (
     <main className="app-shell">
-      <AuthPanel activePage={activePage} user={auth.user} onLogout={handleLogout} onPageChange={setActivePage} />
+      <SidePanel
+        activePage={activePage}
+        mobileOpen={mobileSidebarOpen}
+        onLogout={handleLogout}
+        onMobileClose={() => setMobileSidebarOpen(false)}
+        onPageChange={setActivePage}
+      />
 
-      {activePage === 'dashboard' ? <Dashboard /> : <Settings user={auth.user} />}
+      <div className="app-content">
+        <AppHeader
+          onMobileMenuOpen={() => setMobileSidebarOpen(true)}
+          onThemeToggle={toggleTheme}
+          theme={theme}
+          user={auth.user}
+        />
+
+        {activePage === 'evaluation' && <Evaluation />}
+        {activePage === 'settings' && <Settings user={auth.user} />}
+      </div>
     </main>
   )
 }

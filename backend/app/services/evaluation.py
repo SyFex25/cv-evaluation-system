@@ -24,9 +24,11 @@ from app.services.report.formatter import build_evaluation_report
 
 async def evaluate_cv(
     file: UploadFile,
+    job_description: str,
     settings: Settings,
     provider_name: ProviderName | None = None,
 ) -> AnalyzeResponse:
+    _validate_job_description(job_description)
     _validate_upload(file)
 
     selected_provider = provider_name or settings.default_ai_provider
@@ -41,13 +43,24 @@ async def evaluate_cv(
                 detail="Could not extract text from the uploaded CV.",
             )
 
-        prompt = build_hr_evaluation_prompt(cv_text)
+        prompt = build_hr_evaluation_prompt(
+            job_description=job_description.strip(),
+            cv_text=cv_text,
+        )
         raw_report = await ai_provider.analyze(prompt)
         report = build_evaluation_report(raw_report)
 
         return AnalyzeResponse(provider=ai_provider.name, report=report)
     finally:
         temp_path.unlink(missing_ok=True)
+
+
+def _validate_job_description(job_description: str) -> None:
+    if not job_description.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Job description is required.",
+        )
 
 
 def _validate_upload(file: UploadFile) -> None:

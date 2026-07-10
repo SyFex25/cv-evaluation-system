@@ -31,9 +31,18 @@ class HealthResponse(BaseModel):
     status: str
 
 
+class ProviderRuntimeSettings(BaseModel):
+    provider: str
+    model: str
+    available_models: list[str]
+    temperature: float
+    max_tokens: int
+
+
 class SettingsResponse(BaseModel):
     default_provider: str
     available_providers: list[str]
+    provider_settings: list[ProviderRuntimeSettings]
     max_upload_size_bytes: int
     supported_file_extensions: list[str]
 

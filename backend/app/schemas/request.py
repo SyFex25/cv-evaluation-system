@@ -19,6 +19,13 @@ class AnalyzeOptions(BaseModel):
     )
 
 
+class ProviderRuntimeSettingsUpdate(BaseModel):
+    model: str = Field(min_length=1, max_length=120)
+    temperature: float = Field(ge=0, le=1)
+    max_tokens: int = Field(ge=512, le=4096)
+    set_as_default: bool = True
+
+
 class RegisterRequest(BaseModel):
     email: str = Field(min_length=3, max_length=255)
     password: str = Field(min_length=8, max_length=128)
