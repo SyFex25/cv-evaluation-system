@@ -41,6 +41,11 @@ const providerOptions: ProviderOption[] = [
     label: 'Claude',
     provider: 'Claude',
   },
+  {
+    id: 'deepseek',
+    label: 'DeepSeek',
+    provider: 'DeepSeek',
+  },
 ]
 type SettingsProps = {
   user: User | null
@@ -220,7 +225,7 @@ function ProviderSettingsForm({ provider, option, runtime, saving, onSave }: Pro
           type="number"
           min="512"
           max="4096"
-          step="128"
+          step="1"
           value={draft.maxTokens}
           onChange={(event) => setDraft((current) => ({ ...current, maxTokens: event.target.value }))}
           onBlur={() => setDraft((current) => ({ ...current, maxTokens: String(draftMaxTokens) }))}
@@ -296,7 +301,38 @@ export function Settings({ user }: SettingsProps) {
           />
 
           {loading ? (
-            <div className="settings-loading">Memuat pilihan penyedia...</div>
+            <div className="ai-config settings-skeleton" role="status" aria-busy="true">
+              <span className="settings-skeleton-sr">Memuat pilihan penyedia...</span>
+              <div className="ai-provider-grid" aria-hidden="true">
+                {providerOptions.map((option) => (
+                  <div className="skeleton-choice" key={option.id}>
+                    <span className="skeleton skeleton-avatar" />
+                    <span className="skeleton skeleton-line" />
+                    <span className="skeleton skeleton-radio" />
+                  </div>
+                ))}
+              </div>
+
+              <div className="skeleton-form" aria-hidden="true">
+                <span className="skeleton skeleton-heading" />
+                <div className="skeleton-field">
+                  <span className="skeleton skeleton-label" />
+                  <span className="skeleton skeleton-control" />
+                </div>
+                <div className="skeleton-field">
+                  <span className="skeleton skeleton-label" />
+                  <span className="skeleton skeleton-control skeleton-range" />
+                </div>
+                <div className="skeleton-field">
+                  <span className="skeleton skeleton-label" />
+                  <span className="skeleton skeleton-control" />
+                </div>
+                <div className="skeleton-actions">
+                  <span className="skeleton skeleton-button" />
+                  <span className="skeleton skeleton-button" />
+                </div>
+              </div>
+            </div>
           ) : (
             <div className="ai-config">
               <div className="ai-provider-grid" role="radiogroup" aria-label="Pilihan penyedia AI">

@@ -4,7 +4,7 @@
  * Responsibility: Defines frontend TypeScript types for backend API responses
  */
 
-export type ProviderName = 'openai' | 'anthropic' | 'xai'
+export type ProviderName = 'openai' | 'anthropic' | 'xai' | 'deepseek'
 
 export type User = {
   id: number

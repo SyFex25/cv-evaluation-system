@@ -9,6 +9,7 @@ from fastapi import HTTPException, status
 from app.core.config import ProviderName, Settings
 from app.services.ai.base import AIProvider
 from app.services.ai.claude_service import ClaudeProvider
+from app.services.ai.deepseek_service import DeepSeekProvider
 from app.services.ai.openai_service import OpenAIProvider
 from app.services.ai.xai_service import XAIProvider
 
@@ -51,6 +52,19 @@ def get_ai_provider(provider_name: ProviderName, settings: Settings) -> AIProvid
             settings.xai_model,
             temperature=settings.xai_temperature,
             max_tokens=settings.xai_max_tokens,
+        )
+
+    if provider_name == "deepseek":
+        if not settings.deepseek_api_key:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="DeepSeek provider is not configured.",
+            )
+        return DeepSeekProvider(
+            settings.deepseek_api_key,
+            settings.deepseek_model,
+            temperature=settings.deepseek_temperature,
+            max_tokens=settings.deepseek_max_tokens,
         )
 
     raise HTTPException(

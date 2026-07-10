@@ -20,13 +20,14 @@ AVAILABLE_MODELS: dict[ProviderName, list[str]] = {
         "claude-opus-4-6",
     ],
     "xai": ["grok-4"],
+    "deepseek": ["deepseek-chat"],
 }
 
 
 def build_settings_response(settings: Settings) -> SettingsResponse:
     return SettingsResponse(
         default_provider=settings.default_ai_provider,
-        available_providers=["openai", "anthropic", "xai"],
+        available_providers=["openai", "anthropic", "xai", "deepseek"],
         provider_settings=[
             {
                 "provider": "openai",
@@ -48,6 +49,13 @@ def build_settings_response(settings: Settings) -> SettingsResponse:
                 "available_models": AVAILABLE_MODELS["xai"],
                 "temperature": settings.xai_temperature,
                 "max_tokens": settings.xai_max_tokens,
+            },
+            {
+                "provider": "deepseek",
+                "model": settings.deepseek_model,
+                "available_models": AVAILABLE_MODELS["deepseek"],
+                "temperature": settings.deepseek_temperature,
+                "max_tokens": settings.deepseek_max_tokens,
             },
         ],
         max_upload_size_bytes=MAX_UPLOAD_SIZE_BYTES,
@@ -74,6 +82,10 @@ def update_provider_runtime_settings(
         settings.xai_model = payload.model
         settings.xai_temperature = payload.temperature
         settings.xai_max_tokens = payload.max_tokens
+    elif provider_name == "deepseek":
+        settings.deepseek_model = payload.model
+        settings.deepseek_temperature = payload.temperature
+        settings.deepseek_max_tokens = payload.max_tokens
     else:
         settings.openai_model = payload.model
         settings.openai_temperature = payload.temperature

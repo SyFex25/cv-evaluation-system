@@ -12,7 +12,7 @@ from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-ProviderName = Literal["openai", "anthropic", "xai"]
+ProviderName = Literal["openai", "anthropic", "xai", "deepseek"]
 BACKEND_DIR = Path(__file__).resolve().parents[2]
 ENV_FILE = BACKEND_DIR / ".env"
 
@@ -25,16 +25,20 @@ class Settings(BaseSettings):
     openai_api_key: str | None = None
     anthropic_api_key: str | None = None
     xai_api_key: str | None = None
+    deepseek_api_key: str | None = None
 
     openai_model: str = "gpt-4o-mini"
     anthropic_model: str = "claude-3-5-haiku-20241022"
     xai_model: str = "grok-4"
+    deepseek_model: str = "deepseek-chat"
     openai_temperature: float = Field(default=0.2, ge=0, le=1)
     anthropic_temperature: float = Field(default=0.2, ge=0, le=1)
     xai_temperature: float = Field(default=0.2, ge=0, le=1)
+    deepseek_temperature: float = Field(default=0.2, ge=0, le=1)
     openai_max_tokens: int = Field(default=2000, ge=512, le=4096)
     anthropic_max_tokens: int = Field(default=2000, ge=512, le=4096)
     xai_max_tokens: int = Field(default=2000, ge=512, le=4096)
+    deepseek_max_tokens: int = Field(default=2000, ge=512, le=4096)
 
     auth_database_path: Path = BACKEND_DIR / "database" / "auth.db"
     auth_token_secret: str = "development-only-change-this-secret"

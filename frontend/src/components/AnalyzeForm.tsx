@@ -13,6 +13,7 @@ const providerOptions: Array<{ label: string; value: ProviderName }> = [
   { label: 'OpenAI', value: 'openai' },
   { label: 'Claude', value: 'anthropic' },
   { label: 'Grok', value: 'xai' },
+  { label: 'DeepSeek', value: 'deepseek' },
 ]
 
 type AnalyzeFormProps = {

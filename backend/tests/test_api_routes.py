@@ -26,7 +26,7 @@ def test_settings_route_exposes_safe_runtime_settings():
 
     assert response.status_code == 200
     body = response.json()
-    assert body["available_providers"] == ["openai", "anthropic", "xai"]
+    assert body["available_providers"] == ["openai", "anthropic", "xai", "deepseek"]
     assert body["provider_settings"][0]["provider"] == "openai"
     assert "available_models" in body["provider_settings"][0]
     assert "temperature" in body["provider_settings"][0]

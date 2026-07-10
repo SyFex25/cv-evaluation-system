@@ -9,7 +9,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 
-ProviderName = Literal["openai", "anthropic", "xai"]
+ProviderName = Literal["openai", "anthropic", "xai", "deepseek"]
 
 
 class AnalyzeOptions(BaseModel):

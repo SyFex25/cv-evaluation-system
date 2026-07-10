@@ -1,0 +1,13 @@
+# HR Screening Fit Benchmark — Summary
+
+| model         | provider   |   Accuracy |   Precision |   Recall |     F1 |   avg_latency_s |   avg_score |   parse_errors |
+|:--------------|:-----------|-----------:|------------:|---------:|-------:|----------------:|------------:|---------------:|
+| grok-4        | xai        |       0.72 |      0.8235 |     0.56 | 0.6667 |          12.453 |        39.3 |              0 |
+| deepseek-chat | deepseek   |       0.71 |      0.8387 |     0.52 | 0.642  |           5.573 |        39   |              0 |
+
+## Best model per provider
+
+| model         | provider   |   Accuracy |   Precision |   Recall |     F1 |
+|:--------------|:-----------|-----------:|------------:|---------:|-------:|
+| grok-4        | xai        |       0.72 |      0.8235 |     0.56 | 0.6667 |
+| deepseek-chat | deepseek   |       0.71 |      0.8387 |     0.52 | 0.642  |
