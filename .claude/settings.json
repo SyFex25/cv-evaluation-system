@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(curl -s -o /tmp/login.html -w \"%{http_code}\\\\n\" http://localhost:5183/)",
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(npx --yes playwright --version)",
+      "Bash(npx --yes playwright install chromium --with-deps)",
+      "Bash(npx eslint *)"
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+/**
+ * File: src/index.css
+ * Module: Styles
+ * Responsibility: Defines global typography, brand variables, and document defaults
+ */
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('./assets/fonts/Gotham-Book.otf') format('opentype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('./assets/fonts/Gotham-Bold.otf') format('opentype');
+  font-weight: 700;
+}
+
+:root {
+  --primary-maroon: #800507;
+  --primary-gold: #fcaf17;
+  --primary-gray: #808285;
+  --secondary-red: #c4161c;
+  --secondary-orange: #f7941e;
+  --secondary-purple: #5b57a6;
+  --secondary-blue: #4a6e8f;
+  --secondary-charcoal: #414042;
+  --secondary-gray-700: #58595b;
+  --secondary-gray-600: #6d6e71;
+  --secondary-gray-300: #bcbec0;
+
+  --bg: #f5f5f5;
+  --surface: #ffffff;
+  --surface-muted: #f3f3f3;
+  --border: var(--secondary-gray-300);
+  --text: var(--secondary-charcoal);
+  --muted: var(--secondary-gray-600);
+  --brand: var(--primary-maroon);
+  --brand-strong: #5f0305;
+  --brand-soft: #f9e6e7;
+  --accent: var(--primary-gold);
+  --accent-strong: var(--secondary-orange);
+  --success: var(--secondary-blue);
+  --danger: var(--secondary-red);
+  --shadow: 0 18px 50px rgba(65, 64, 66, 0.08);
+  font-family: Gotham, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+select:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+#root {
+  min-height: 100vh;
+}

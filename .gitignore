@@ -216,3 +216,96 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ==================================================
+# Frontend (React / Vite)
+# ==================================================
+
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/coverage/
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# ==================================================
+# Backend
+# ==================================================
+
+backend/.env
+backend/.env.*
+
+!backend/.env.example
+
+# ==================================================
+# Root Environment
+# ==================================================
+
+.env
+.env.*
+
+!.env.example
+
+# ==================================================
+# Logs
+# ==================================================
+
+*.log
+logs/
+
+# ==================================================
+# Operating System
+# ==================================================
+
+.DS_Store
+Thumbs.db
+
+# ==================================================
+# IDE
+# ==================================================
+
+.vscode/
+.idea/
+
+# ==================================================
+# Evaluation Dataset
+# ==================================================
+
+evaluation/datasets/
+notebooks/datasets/*
+!notebooks/datasets/.gitkeep
+
+# Evaluation outputs
+evaluation/outputs/
+notebooks/outputs/*
+!notebooks/outputs/.gitkeep
+
+# ==================================================
+# Upload Folder
+# ==================================================
+
+backend/uploads/
+
+# ==================================================
+# Generated Reports
+# ==================================================
+
+backend/reports/
+
+# ==================================================
+# Temporary Files
+# ==================================================
+
+*.tmp
+*.temp
+
+# Project local configuration
+.project_rules/
+AGENTS.md
+
+# Local authentication database
+backend/database/*.db
+backend/database/*.db-journal
+backend/database/*.sqlite
+backend/tests/*-test.db

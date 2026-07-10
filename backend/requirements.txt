@@ -1,0 +1,15 @@
+# File: backend/requirements.txt
+# Module: Dependencies
+# Responsibility: Lists Python packages required by the FastAPI backend and tests
+
+pytest
+pytest-asyncio
+fastapi
+uvicorn[standard]
+pydantic-settings
+python-multipart
+pypdf
+python-docx
+openai
+anthropic
+httpx2
