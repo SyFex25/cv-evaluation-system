@@ -14,8 +14,12 @@ from app.schemas.response import SettingsResponse
 
 AVAILABLE_MODELS: dict[ProviderName, list[str]] = {
     "openai": ["gpt-4o-mini", "gpt-4o", "gpt-4.1-mini", "gpt-4.1"],
-    "anthropic": ["claude-3-5-haiku-latest", "claude-3-5-sonnet-latest", "claude-3-7-sonnet-latest"],
-    "xai": ["grok-2-latest", "grok-3-mini", "grok-3"],
+    "anthropic": [
+        "claude-haiku-4-6",
+        "claude-sonnet-4-6",
+        "claude-opus-4-6",
+    ],
+    "xai": ["grok-4"],
 }
 
 

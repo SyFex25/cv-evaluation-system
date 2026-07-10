@@ -146,7 +146,7 @@ function ProviderSettingsForm({ provider, option, runtime, saving, onSave }: Pro
       <div className="settings-model-form-heading">
         <div>
           <h3>Atur {option?.label || 'AI'}</h3>
-          <p>Pilih model, tingkat kreativitas, dan panjang jawaban yang sesuai untuk evaluasi CV.</p>
+          <p>Pilih model, tingkat kreativitas, dan maksimum token yang sesuai untuk evaluasi CV.</p>
         </div>
         <span>{describeTone(draftTemperature)}</span>
       </div>

@@ -27,8 +27,8 @@ class Settings(BaseSettings):
     xai_api_key: str | None = None
 
     openai_model: str = "gpt-4o-mini"
-    anthropic_model: str = "claude-3-5-haiku-latest"
-    xai_model: str = "grok-2-latest"
+    anthropic_model: str = "claude-3-5-haiku-20241022"
+    xai_model: str = "grok-4"
     openai_temperature: float = Field(default=0.2, ge=0, le=1)
     anthropic_temperature: float = Field(default=0.2, ge=0, le=1)
     xai_temperature: float = Field(default=0.2, ge=0, le=1)
